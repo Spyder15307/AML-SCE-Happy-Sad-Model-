@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be Happy Be Sad</title>
+    <!-- Link Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --purple: #8A2BE2;
+            --pink: #1520A6;
+            --yellow: #FFD700;
+            --orange: #FFA500;
+            --light-blue: #87CEEB;
+            --dark-blue: #4682B4;
+            --grey: #82EEFD;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column; /* Added to ensure navbar goes on top */
+            min-height: 100vh;
+            background: var(--light-blue);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background-color: var(--purple);
+        }
+
+        h1, h2 {
+            color: var(--dark-blue);
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .text_container {
+            background-color: var(--grey);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .text_container h1 {
+            font-size: 3em;
+            margin-bottom: 30px;
+        }
+
+        .text_container h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .exotic-text {
+            color: var(--pink);
+            font-size: 2.7em;
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">BHBS</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/live-webcam">Live Webcam</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/insert-image">Upload Image</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About Us</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Login/Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="text_container">
+        <h1>Be Happy Be Sad</h1>
+        <h2>In today's world,</h2>
+        <h2>Someone's Sadness is Someone's Happiness!</h2>
+        <h2>Someone's Happiness is Someone's Sadness!</h2>
+    </div>
+
+    <div class="exotic-text">Embrace the symphony of contrasts that paints the canvas of life.</div>
+
+    <!-- Link Bootstrap JS (Optional) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

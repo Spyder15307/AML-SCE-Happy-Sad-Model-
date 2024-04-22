@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Capture</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+          --blue: #0071FF;
+          --light-blue: #B6DBF6;
+          --dark-blue: #005DD1;
+          --grey: #f2f2f2;
+        }
+    
+        body {
+          display: flex;
+          flex-direction: column; /* Added to ensure navbar goes on top */
+          min-height: 100vh;
+          background: var(--light-blue);
+        }
+
+        #video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 20px;
+        }
+
+        #video {
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+          <a class="navbar-brand" href="/">BHBS</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                  <li class="nav-item">
+                      <a class="nav-link" href="/live-webcam">Live Webcam</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="/insert-image">Upload Image</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#">Home</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#">Contact Us</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#">About Us</a>
+                  </li>
+              </ul>
+              <ul class="navbar-nav">
+                  <li class="nav-item">
+                      <a class="nav-link" href="#">Login/Sign Up</a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+    </nav>
+
+    <div id="video-container">
+        <button id="start-camera" class="btn btn-primary">Start Camera</button>
+        <video id="video" width="320" height="240" autoplay></video>
+        <canvas id="canvas" width="320" height="240"></canvas>
+        <button id="click-photo" class="btn btn-success">Click Photo</button>
+        <button id="proceed" class="btn btn-info" style="display:none;">Predict</button>
+    </div>
+
+    <script>
+        let camera_button = document.querySelector("#start-camera");
+        let video = document.querySelector("#video");
+        let click_button = document.querySelector("#click-photo");
+        let canvas = document.querySelector("#canvas");
+        let proceed_button = document.querySelector("#proceed");
+
+        camera_button.addEventListener('click', async function() {
+            let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            video.srcObject = stream;
+            proceed_button.style.display = "none"; // Hide proceed button when starting camera
+        });
+
+        click_button.addEventListener('click', function() {
+            canvas.style.display = "block"; // Display the canvas
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            let image_data_url = canvas.toDataURL('image/jpeg');
+
+            // Create a form data object
+            let formData = new FormData();
+            formData.append('photo', dataURItoBlob(image_data_url), 'photo.jpg');
+
+            // Send the image to the server
+            fetch('/result', {
+                method: 'POST',
+                body: formData
+            }).then(() => {
+                proceed_button.style.display = "block"; // Show proceed button after capturing photo
+            });
+        });
+
+        proceed_button.addEventListener('click', function() {
+            window.location.href = "/result"; // Redirect to result.html when clicked
+        });
+
+        // Function to convert data URI to Blob
+        function dataURItoBlob(dataURI) {
+            let byteString = atob(dataURI.split(',')[1]);
+            let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            let ab = new ArrayBuffer(byteString.length);
+            let ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ab], { type: mimeString });
+        }
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
