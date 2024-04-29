@@ -55,11 +55,13 @@ def insert_image():
             prediction = model.predict(img_processed)
             # Determine the emotion based on the prediction
             emotion = "Happy" if prediction < 0.5 else "Sad"
+            # emotion = str(predic)
+            pre = str(prediction)
             # Encode image to base64
             _, img_encoded = cv2.imencode('.jpg', img)
             img_base64 = base64.b64encode(img_encoded).decode('utf-8')
             # Pass the filename, emotion, and base64 encoded image to the result template
-            return render_template('result.html', emotion=emotion, img_base64=img_base64)
+            return render_template('result.html', emotion=emotion, prediction=pre, img_base64=img_base64)
     return render_template('insert_image.html')
 
 @app.route('/live-webcam')
@@ -86,14 +88,16 @@ def result():
         img_processed = img_resized / 255.0
         img_processed = np.expand_dims(img_processed, axis=0)
         # Predict using the model
-        prediction = model.predict(img_processed)
+        prob = model.predict(img_processed)
         # Determine the emotion based on the prediction
-        emotion = "Happy" if prediction < 0.5 else "Sad"
+        emotion = "Happy" if prob < 0.8 else "Sad"
+        # emotion = str(predict)
+        pre = str(prob)
         # Encode image to base64
         _, img_encoded = cv2.imencode('.jpg', img)
         img_base64 = base64.b64encode(img_encoded).decode('utf-8')
         # Pass the filename, emotion, and base64 encoded image to the result template
-        return render_template('result.html', emotion=emotion, img_base64=img_base64)
+        return render_template('result.html', emotion=emotion, prediction=pre, img_base64=img_base64)
 
 if __name__ == '__main__':
     app.run(debug=True)
